@@ -49,19 +49,35 @@ for (var i = 0; i < num_cubes; i++) {
   cube_z = Math.floor(Math.random() * camera.position.z) * neg_or_pos();
   cubes.push(cube);
   scene.add(cube);
-  cubes[i].position.set(cube_x, cube_y, cube_z)
+  cubes[i].position.set(cube_x, cube_y, cube_z);
+  THREE.GeometryUtils.merge(geometry, cube);
 }
+
+var rotate_factor = 1500;
+var toggle_z;
 
 var animate = function () {
   requestAnimationFrame( animate );
 
   for (var i = 0; i < cubes.length; i++) {
-    cubes[i].rotation.x += cubes[i].geometry.parameters.width / 1000;
-    cubes[i].rotation.y += cubes[i].geometry.parameters.width / 1000;
-    cubes[i].rotation.z += cubes[i].geometry.parameters.width / 1000;
+    cubes[i].rotation.x += cubes[i].geometry.parameters.width / rotate_factor;
+    cubes[i].rotation.y += cubes[i].geometry.parameters.width / rotate_factor;
+    cubes[i].rotation.z += cubes[i].geometry.parameters.width / rotate_factor;
   }
 
-  camera.position.z++;
+  if (camera.position.z >= 100) {
+    toggle_z = true;
+  }
+
+  if (camera.position.z <= 0) {
+    toggle_z = false;
+  }
+
+  if (toggle_z) {
+    camera.position.z--;
+  } else {
+    camera.position.z++;
+  }
 
   renderer.render(scene, camera);
 };
