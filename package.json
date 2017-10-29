@@ -1,0 +1,23 @@
+{
+  "name": "javascript-tinkering",
+  "version": "1.0.0",
+  "description": "first deployed version of 2 three.js projects",
+  "main": "home.html",
+  "scripts": {
+    "test": "None"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lilybhattacharjee5/js-experiments.git"
+  },
+  "keywords": [
+    "javascript",
+    "three.js"
+  ],
+  "author": "Lily Bhattacharjee",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lilybhattacharjee5/js-experiments/issues"
+  },
+  "homepage": "https://github.com/lilybhattacharjee5/js-experiments#readme"
+}

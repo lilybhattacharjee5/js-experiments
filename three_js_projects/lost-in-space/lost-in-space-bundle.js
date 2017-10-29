@@ -9813,7 +9813,7 @@ animate();
 		function remove( attribute ) {
 
 			if ( attribute.isInterleavedBufferAttribute ) attribute = attribute.data;
-			
+
 			var data = buffers[ attribute.uuid ];
 
 			if ( data ) {
@@ -20836,7 +20836,7 @@ animate();
 			}
 
 			scope.numPlanes = nPlanes;
-			
+
 			return dstArray;
 
 		}
