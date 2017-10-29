@@ -1,31 +1,67 @@
-if (Detector.webgl) {
-  animate();
-} else {
-  var warning = Detector.getWebGLErrorMessage();
-  document.getElementById('container').appendChild(warning);
-}
-
 var THREE = require('three');
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
-var renderer = new THREE.WebGLRenderer();
+var renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
-var geometry = new THREE.BoxGeometry( 2, 2, 2 );
-var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-var cube = new THREE.Mesh( geometry, material );
-scene.add( cube );
+var neg_or_pos = function() {
+  var generator = Math.round(Math.random());
+  if (generator == 0) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
 
-camera.position.z = 3;
+camera.position.z = 100;
+
+cubes = [];
+var geometry;
+var material;
+var cube;
+var cube_size;
+var cube_x;
+var cube_y;
+var cube_z;
+var hue;
+var num_cubes = (Math.round(Math.random() * 300))
+
+for (var i = 0; i < num_cubes; i++) {
+  cube_size = Math.floor(Math.random() * 10)
+  geometry = new THREE.BoxGeometry(cube_size, cube_size, cube_size);
+
+  var hue;
+  for (var j = 0; j < geometry.faces.length; j ++ ) {
+      if (j % 2 == 0) {
+        hue = Math.random() * 0xffffff;
+      }
+      var face = geometry.faces[j];
+      face.color.setHex( hue );
+  }
+
+  material = new THREE.MeshBasicMaterial( { vertexColors: THREE.FaceColors });
+  cube = new THREE.Mesh( geometry, material );
+  cube_x = Math.floor(Math.random() * camera.position.z) * neg_or_pos();
+  cube_y = Math.floor(Math.random() * camera.position.z) * neg_or_pos();
+  cube_z = Math.floor(Math.random() * camera.position.z) * neg_or_pos();
+  cubes.push(cube);
+  scene.add(cube);
+  cubes[i].position.set(cube_x, cube_y, cube_z)
+}
 
 var animate = function () {
   requestAnimationFrame( animate );
 
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
+  for (var i = 0; i < cubes.length; i++) {
+    cubes[i].rotation.x += cubes[i].geometry.parameters.width / 1000;
+    cubes[i].rotation.y += cubes[i].geometry.parameters.width / 1000;
+    cubes[i].rotation.z += cubes[i].geometry.parameters.width / 1000;
+  }
+
+  camera.position.z++;
 
   renderer.render(scene, camera);
 };
