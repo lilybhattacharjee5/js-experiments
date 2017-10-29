@@ -1,4 +1,77 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var THREE = require('three');
+
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+
+var renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize( window.innerWidth, window.innerHeight );
+document.body.appendChild( renderer.domElement );
+
+var neg_or_pos = function() {
+  var generator = Math.round(Math.random());
+  if (generator == 0) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
+
+camera.position.z = 0;
+
+var stars = [];
+var geometry;
+var material;
+var sphere;
+var sphere_size;
+var sphere_x;
+var sphere_y;
+var sphere_z;
+var hue;
+
+var create_sphere = function() {
+  sphere_size = Math.random() * 3;
+  geometry = new THREE.SphereGeometry(sphere_size);
+
+  hue = Math.random() * 0xffffff;
+
+  material = new THREE.MeshBasicMaterial( { color: hue });
+  sphere = new THREE.Mesh( geometry, material );
+  sphere_x = Math.floor(Math.random() * (camera.position.x + 100)) * neg_or_pos();
+  sphere_y = Math.floor(Math.random() * (camera.position.y + 100)) * neg_or_pos();
+  sphere_z = Math.floor(Math.random() * (camera.position.z + 100)) * neg_or_pos();
+  sphere.position.set(sphere_x, sphere_y, sphere_z);
+  stars.push(sphere);
+  scene.add(sphere);
+  THREE.GeometryUtils.merge(geometry, sphere);
+}
+
+var rotate_factor = 500;
+
+var animate = function () {
+  requestAnimationFrame( animate );
+
+  if (stars.length < 10) {
+    create_sphere();
+  } else {
+    scene.remove(stars[stars.length]);
+    stars.pop();
+  }
+
+  for (var i = 0; i < stars.length; i++) {
+    stars[i].rotation.x += stars[i].geometry.parameters.radius / rotate_factor;
+    stars[i].rotation.y += stars[i].geometry.parameters.radius / rotate_factor;
+    stars[i].rotation.z += stars[i].geometry.parameters.radius / rotate_factor;
+  }
+
+  camera.position.z++;
+
+  renderer.render(scene, camera);
+};
+
+animate();
+
+},{"three":2}],2:[function(require,module,exports){
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -44239,77 +44312,4 @@
 
 })));
 
-},{}],2:[function(require,module,exports){
-var THREE = require('three');
-
-var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-
-var renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize( window.innerWidth, window.innerHeight );
-document.body.appendChild( renderer.domElement );
-
-var neg_or_pos = function() {
-  var generator = Math.round(Math.random());
-  if (generator == 0) {
-    return -1;
-  } else {
-    return 1;
-  }
-}
-
-camera.position.z = 100;
-
-cubes = [];
-var geometry;
-var material;
-var cube;
-var cube_size;
-var cube_x;
-var cube_y;
-var cube_z;
-var hue;
-var num_cubes = (Math.round(Math.random() * 300))
-
-for (var i = 0; i < num_cubes; i++) {
-  cube_size = Math.floor(Math.random() * 10)
-  geometry = new THREE.BoxGeometry(cube_size, cube_size, cube_size);
-
-  var hue;
-  for (var j = 0; j < geometry.faces.length; j ++ ) {
-      if (j % 2 == 0) {
-        hue = Math.random() * 0xffffff;
-      }
-      var face = geometry.faces[j];
-      face.color.setHex( hue );
-  }
-
-  material = new THREE.MeshBasicMaterial( { vertexColors: THREE.FaceColors });
-  cube = new THREE.Mesh( geometry, material );
-  cube_x = Math.floor(Math.random() * camera.position.z) * neg_or_pos();
-  cube_y = Math.floor(Math.random() * camera.position.z) * neg_or_pos();
-  cube_z = Math.floor(Math.random() * camera.position.z) * neg_or_pos();
-  cubes.push(cube);
-  scene.add(cube);
-  cubes[i].position.set(cube_x, cube_y, cube_z);
-  THREE.GeometryUtils.merge(geometry, cube);
-}
-
-var rotate_factor = 1500;
-var toggle_x;
-
-var animate = function () {
-  requestAnimationFrame( animate );
-
-  for (var i = 0; i < cubes.length; i++) {
-    cubes[i].rotation.x += cubes[i].geometry.parameters.width / rotate_factor;
-    cubes[i].rotation.y += cubes[i].geometry.parameters.width / rotate_factor;
-    cubes[i].rotation.z += cubes[i].geometry.parameters.width / rotate_factor;
-  }
-
-  renderer.render(scene, camera);
-};
-
-animate();
-
-},{"three":1}]},{},[2]);
+},{}]},{},[1]);

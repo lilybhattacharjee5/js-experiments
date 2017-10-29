@@ -54,7 +54,7 @@ for (var i = 0; i < num_cubes; i++) {
 }
 
 var rotate_factor = 1500;
-var toggle_z;
+var toggle_x;
 
 var animate = function () {
   requestAnimationFrame( animate );
@@ -63,20 +63,6 @@ var animate = function () {
     cubes[i].rotation.x += cubes[i].geometry.parameters.width / rotate_factor;
     cubes[i].rotation.y += cubes[i].geometry.parameters.width / rotate_factor;
     cubes[i].rotation.z += cubes[i].geometry.parameters.width / rotate_factor;
-  }
-
-  if (camera.position.z >= 100) {
-    toggle_z = true;
-  }
-
-  if (camera.position.z <= 0) {
-    toggle_z = false;
-  }
-
-  if (toggle_z) {
-    camera.position.z--;
-  } else {
-    camera.position.z++;
   }
 
   renderer.render(scene, camera);
