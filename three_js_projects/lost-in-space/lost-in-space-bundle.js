@@ -29,13 +29,28 @@ var sphere_y;
 var sphere_z;
 var hue;
 
+var color_sphere = function() {
+  var color_picker = Math.floor(Math.random() * 3);
+  // blue
+  if (color_picker == 0) {
+    return "rgb(" + 0 + ", " + 0 + ", " + Math.floor(Math.random() * 256) + ")";
+  }
+  // red / orange
+  else if (color_picker == 1) {
+    return "rgb(" + Math.floor(Math.random() * 256) + ", " + Math.floor(Math.random() * 256) + ", " + 0 + ")";
+  }
+  // yellow
+  else {
+    var red_value = Math.floor(Math.random() * 256)
+    return "rgb(" + red_value + ", " +  Math.floor(red_value / 2) + ", " + 0 + ")";
+  }
+}
+
 var create_sphere = function() {
   sphere_size = Math.random() * 3;
   geometry = new THREE.SphereGeometry(sphere_size);
 
-  hue = new THREE.Color("rgb(" + Math.random() * 256 + ", " + Math.random() * 256 + ", " + Math.random() * 256 + ")");
-
-  material = new THREE.MeshBasicMaterial( { color: hue });
+  material = new THREE.MeshBasicMaterial( { color: color_sphere() });
   sphere = new THREE.Mesh( geometry, material );
   sphere_x = Math.floor(Math.random() * (camera.position.x + 100)) * neg_or_pos();
   sphere_y = Math.floor(Math.random() * (camera.position.y + 100)) * neg_or_pos();
