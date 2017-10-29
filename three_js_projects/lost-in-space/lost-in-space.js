@@ -1,4 +1,4 @@
-var THREE = require('./node_modules/three');
+var THREE = require('../node_modules/three');
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
@@ -32,7 +32,7 @@ var create_sphere = function() {
   sphere_size = Math.random() * 3;
   geometry = new THREE.SphereGeometry(sphere_size);
 
-  hue = Math.random() * 0xffffff;
+  hue = new THREE.Color("rgb(" + Math.random() * 256 + ", " + Math.random() * 256 + ", " + Math.random() * 256 + ")");
 
   material = new THREE.MeshBasicMaterial( { color: hue });
   sphere = new THREE.Mesh( geometry, material );
